@@ -25,7 +25,7 @@ var
 begin
 try
   WriteLn('**************************************');
-  WriteLn('*      SII Decode utility 1.2.1      *');
+  WriteLn('*      SII Decode utility 1.2.2      *');
   WriteLn('*   (c) 2017 - 2018 Frantisek Milt   *');
   WriteLn('**************************************');
   WriteLn;
