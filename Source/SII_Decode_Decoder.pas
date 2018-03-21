@@ -506,7 +506,7 @@ end;
 
 procedure TSIIBin_Decoder.ConvertStream(InStream, OutStream: TStream);
 const
-  asLineBreak = AnsiString(sLineBreak);
+  asLineBreak: AnsiString = sLineBreak;
 var
   InitialPos: Int64;
   FileLayout: TSIIBin_FileLayout;
