@@ -25,7 +25,7 @@ var
 begin
 try
   WriteLn('**************************************');
-  WriteLn('*      SII Decode utility 1.2.2      *');
+  WriteLn('*      SII Decode utility 1.3.0      *');
   WriteLn('*   (c) 2017 - 2018 Frantisek Milt   *');
   WriteLn('**************************************');
   WriteLn;
@@ -44,21 +44,24 @@ try
     begin
       with TSIIBin_Decoder.Create do
       try
-        Output := TAnsiStringList.Create;
-        try
-          Output.TrailingLineBreak := False;
-          WriteLn('Loading...');
-          LoadFromFile(RTLToStr(ParamStr(1)));
-          WriteLn('Converting...');
-          Convert(Output);
-          WriteLn('Saving...');
-          If ParamCount > 1 then
-            Output.SaveToFile(ParamStr(2))
-          else
-            Output.SaveToFile(ParamStr(1));
-        finally
-          Output.Free;
-        end;
+        If ParamCount <= 1 then
+          begin
+            Output := TAnsiStringList.Create;
+            try
+              Output.TrailingLineBreak := False;
+              WriteLn('Converting...');
+              ConvertFromFile(RTLToStr(ParamStr(1)),Output);
+              WriteLn('Saving...');
+              Output.SaveToFile(RTLToStr(ParamStr(1)));
+            finally
+              Output.Free;
+            end;
+          end
+        else
+          begin
+            WriteLn('Converting...');
+            ConvertFile(RTLToStr(ParamStr(1)),RTLToStr(ParamStr(2)));
+          end;
       finally
         Free;
       end;
@@ -68,7 +71,7 @@ except
     begin
       WriteLn('An error has occured. Error message:');
       WriteLn;
-      WriteLn('  ',E.Message);
+      WriteLn('  ',StrToCsl(E.Message));
       WriteLn;
       Write('Press enter to continue...'); ReadLn;
     end;
