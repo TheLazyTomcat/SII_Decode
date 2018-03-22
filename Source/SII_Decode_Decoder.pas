@@ -73,7 +73,7 @@ type
     procedure ConvertFromStream(Stream: TStream; Output: TAnsiStringList); overload; virtual;
     procedure ConvertFromFile(const FileName: String; Output: TStrings); overload; virtual;
     procedure ConvertFromFile(const FileName: String; Output: TAnsiStringList); overload; virtual;
-    procedure ConvertStream(InStream, OutStream: TStream; RectifySize: Boolean = True); virtual;
+    procedure ConvertStream(InStream, OutStream: TStream; InvariantOutput: Boolean = False); virtual;
     procedure ConvertFile(const InFileName, OutFileName: String); overload; virtual;
     property DataBlocks[Index: Integer]: TSIIBin_DataBlock read GetDataBlock;
     property OnProgressCallBack: TSIIBin_ProgressCallback read fOnProgressCB write fOnProgressCB;    
@@ -506,17 +506,16 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TSIIBin_Decoder.ConvertStream(InStream, OutStream: TStream; RectifySize: Boolean = True);
+procedure TSIIBin_Decoder.ConvertStream(InStream, OutStream: TStream; InvariantOutput: Boolean = False);
 const
   asLineBreak: AnsiString = sLineBreak;
 var
-  InitialPos:   Int64;
-  OrigOutSize:  Int64;
-  FileLayout:   TSIIBin_FileLayout;
-  BlockType:    TSIIBin_BlockType;
-  Continue:     Boolean;
-  DataBlock:    TSIIBin_DataBlock;
-  TempPos:      Int64;
+  InitialPos: Int64;
+  FileLayout: TSIIBin_FileLayout;
+  BlockType:  TSIIBin_BlockType;
+  Continue:   Boolean;
+  DataBlock:  TSIIBin_DataBlock;
+  TempPos:    Int64;
 
   procedure WriteToOutput(const Str: AnsiString; WriteLineBreak: Boolean = True);
   begin
@@ -545,15 +544,18 @@ If InStream <> OutStream then
           raise Exception.CreateFmt('TSIIBin_Decoder.ConvertStream: Unknown format (0x%.8x).',[FileLayout.Header.Signature]);
         end;
         // output preallocation
-        OrigOutSize := OutStream.Size;
-        TempPos := OutStream.Position;
-        try
-          If ((OutStream.Size - OutStream.Position) < Trunc((InStream.Size - InStream.Position) * SIIBIN_BIN_TEXT_RATIO)) and
-            ((InStream.Size - InStream.Position) <= 26214400) {25MiB} then // prevent allocation of huge amount of memory in case of erroneous input
-            OutStream.Size := OutStream.Size + Trunc((InStream.Size - InStream.Position) * SIIBIN_BIN_TEXT_RATIO);
-        finally
-          OutStream.Position := TempPos;
-        end;
+        If not InvariantOutput then
+          begin
+            TempPos := OutStream.Position;
+            try
+              If ((OutStream.Size - OutStream.Position) < Trunc((InStream.Size - InStream.Position) * SIIBIN_BIN_TEXT_RATIO)) and
+                // prevent allocation of huge amount of memory in case of erroneous input              
+                ((InStream.Size - InStream.Position) <= 26214400) {25MiB} then
+                OutStream.Size := OutStream.Size + Trunc((InStream.Size - InStream.Position) * SIIBIN_BIN_TEXT_RATIO);
+            finally
+              OutStream.Position := TempPos;
+            end;
+          end;
         // conversion
         WriteToOutput(AnsiString('SiiNunit'));
         WriteToOutput(AnsiString('{'));
@@ -575,7 +577,7 @@ If InStream <> OutStream then
         WriteToOutput(AnsiString('}'),False);
         ClearLayouts(FileLayout);
         // rectify size
-        If RectifySize or (OutStream.Size > OrigOutSize) then
+        If not InvariantOutput and (OutStream.Position < OutStream.Size) then
           OutStream.Size := OutStream.Position;
         DoProgress(1.0,ptStreaming);
       end
@@ -595,7 +597,7 @@ InFileStream := TFileStream.Create(StrToRTL(InFileName),fmOpenRead or fmShareDen
 try
   OutFileStream := TFileStream.Create(StrToRTL(OutFileName),fmCreate or fmShareExclusive);
   try
-    ConvertStream(InFileStream,OutFileStream,True);
+    ConvertStream(InFileStream,OutFileStream,False);
   finally
     OutFileStream.Free;
   end;
