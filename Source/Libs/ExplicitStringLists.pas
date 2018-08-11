@@ -9,12 +9,13 @@
 
   Explicit string lists
 
-  ©František Milt 2017-09-10
+  ©František Milt 2018-05-21
 
-  Version 1.0
+  Version 1.0.2
 
   Dependencies:
     AuxTypes        - github.com/ncs-sniper/Lib.AuxTypes
+    AuxClasses      - github.com/ncs-sniper/Lib.AuxClasses
     StrRect         - github.com/ncs-sniper/Lib.StrRect
     BinaryStreaming - github.com/ncs-sniper/Lib.BinaryStreaming
 

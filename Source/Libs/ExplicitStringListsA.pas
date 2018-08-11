@@ -11,12 +11,13 @@
 
   Part A - lists working with ansichar-based strings.
 
-  ©František Milt 2017-09-10
+  ©František Milt 2018-05-21
 
-  Version 1.0
+  Version 1.0.2
 
   Dependencies:
     AuxTypes        - github.com/ncs-sniper/Lib.AuxTypes
+    AuxClasses      - github.com/ncs-sniper/Lib.AuxClasses
     StrRect         - github.com/ncs-sniper/Lib.StrRect
     BinaryStreaming - github.com/ncs-sniper/Lib.BinaryStreaming
 
@@ -79,6 +80,12 @@ uses
   {$IFDEF Windows} Windows,{$ENDIF} AnsiStrings,
 {$IFEND}
   SysUtils, StrRect, ExplicitStringListsParser;
+
+{$IFDEF FPC_DisableWarns}
+  {$DEFINE FPCDWM}
+  {$DEFINE W4055:={$WARN 4055 OFF}} // Conversion between ordinals and pointers is not portable
+  {$DEFINE W5024:={$WARN 5024 OFF}} // Parameter "$1" not used
+{$ENDIF}
 
 {===============================================================================
 --------------------------------------------------------------------------------
@@ -145,11 +152,13 @@ SetLength(Result,Len);
 Len := 1;
 For i := LowIndex to HighIndex do
   begin
-    System.Move(fStrings[i][1],Addr(Result[Len])^,Length(fStrings[i]) * SizeOf(AnsiChar));
+    If Length(fStrings[i]) > 0 then
+      System.Move(fStrings[i][1],Addr(Result[Len])^,Length(fStrings[i]) * SizeOf(AnsiChar));
     Inc(Len,Length(fStrings[i]));
     If (i < HighIndex) or TrailingLineBreak and (Length(fLineBreak) > 0) then
       begin
-        System.Move(fLineBreak[1],Addr(Result[Len])^,Length(fLineBreak) * SizeOf(AnsiChar));
+        If Length(fLineBreak) > 0 then
+          System.Move(fLineBreak[1],Addr(Result[Len])^,Length(fLineBreak) * SizeOf(AnsiChar));
         Inc(Len,Length(fLineBreak));
       end;
   end;
@@ -159,28 +168,44 @@ end;
 
 procedure TShortStringList.SetAnsiText(const Value: AnsiString);
 var
-  C,S:  PAnsiChar;
-  Buff: AnsiString;
+  C,S,E:  PAnsiChar;
+  Buff:   AnsiString;
 begin
+{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
 BeginUpdate;
 try
   Clear;
   C := PAnsiChar(Value);
+  E := PAnsiChar(PtrUInt(C) + PtrUInt(Length(Value) * SizeOf(AnsiChar)));
   If C <> nil then
-    while Ord(C^) <> 0 do
+    while PtrUInt(C) < PtrUInt(E) do
       begin
         S := C;
-        while not IsBreak(C^) do Inc(C);
-        If ({%H-}PtrUInt(C) - {%H-}PtrUInt(S)) > 0 then
+        while (PtrUInt(C) < PtrUInt(E)) do
+          If IsBreak(C^) then Break{while (PtrUInt(C) < PtrUInt(E))}
+            else Inc(C);
+
+        If (PtrUInt(C) - PtrUInt(S)) > 0 then
           begin
-            SetLength(Buff,({%H-}PtrUInt(C) - {%H-}PtrUInt(S)) div SizeOf(AnsiChar));
-            System.Move(S^,PAnsiChar(Buff)^,Length(Buff) * SizeOf(AnsiChar));        
+            SetLength(Buff,(PtrUInt(C) - PtrUInt(S)) div SizeOf(AnsiChar));
+            If Length(Buff) > 0 then
+              System.Move(S^,PAnsiChar(Buff)^,Length(Buff) * SizeOf(AnsiChar));
             Add(ShortString(Buff));
           end
         else Add('');
-        If Ord(C^) = 13 then Inc(C);
-        If Ord(C^) = 10 then Inc(C);
+
+        If PtrUInt(C) < PtrUInt(E) then
+          If IsBreak(C^) then
+            begin
+              If (PtrUInt(C) + 1) < PtrUInt(E) then
+                // more than 1 char left in string
+                If (Ord(C^) <> Ord(PAnsiChar(PtrUInt(C) + SizeOf(AnsiChar))^)) and
+                  IsBreak(PAnsiChar(PtrUInt(C) + SizeOf(AnsiChar))^,False) and
+                  (Ord(C^) <> 0) then Inc(C);
+              Inc(C);
+            end;
       end;
+{$IFDEF FPCDWM}{$POP}{$ENDIF}
 finally
   EndUpdate;
 end;
@@ -274,7 +299,8 @@ Len := 1;
 For i := LowIndex to HighIndex do
   begin
     Temp := GetRectifiedString(i);
-    System.Move(Temp[1],Addr(Result[Len])^,Length(Temp) * SizeOf(AnsiChar));
+    If Length(Temp) > 0 then
+      System.Move(Temp[1],Addr(Result[Len])^,Length(Temp) * SizeOf(AnsiChar));
     Inc(Len,Length(Temp));
     If i < HighIndex then
       begin
