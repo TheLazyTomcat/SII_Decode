@@ -16,8 +16,8 @@ procedure Main;
 implementation
 
 uses
-  SysUtils, StrRect, ExplicitStringLists,
-  SII_Decode_Decoder;
+  SysUtils, StrRect, ExplicitStringLists;
+  //BSII_Decode_Decoder;
 
 procedure Main;
 var
@@ -26,7 +26,7 @@ begin
 try
   WriteLn('**************************************');
   WriteLn('*      SII Decode utility 1.3.2      *');
-  WriteLn('*   (c) 2017 - 2018 Frantisek Milt   *');
+  WriteLn('*   (c) 2017 - 2019 Frantisek Milt   *');
   WriteLn('**************************************');
   WriteLn;
   If ParamCount <= 0 then
@@ -42,6 +42,7 @@ try
     end
   else
     begin
+    (*
       with TSIIBin_Decoder.Create do
       try
         If ParamCount <= 1 then
@@ -65,6 +66,7 @@ try
       finally
         Free;
       end;
+    *)
     end;
 except
   on E: Exception do

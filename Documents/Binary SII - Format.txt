@@ -75,11 +75,11 @@ Layout block
 ----------------------------------------
 Layout block is denoted by a block type of 0.
 Payload of the layout block consists of an 8bit boolean value denoting block
-validity, layout ID, layout name and an  array of value information (type, name
+validity, layout ID, layout name and an array of value information (type, name
 and type-specific data). This array is terminated by a value type of zero
 (NOT followed by a value name or data).
 When the 8bit boolean value (validity) is zero, the block is considered to be
-invalid and marks end of the file.
+invalid and marks an end of the file.
 Layout ID must not be 0 and must be unique (ID equal to 0 or non-unique ID is
 treated as an error).
 
