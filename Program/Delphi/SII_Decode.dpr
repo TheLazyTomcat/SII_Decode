@@ -20,7 +20,20 @@ uses
   SII_Decode_ValueNode_00000003 in '..\..\Source\SII_Decode_ValueNode_00000003.pas',
   SII_Decode_ValueNode_00000004 in '..\..\Source\SII_Decode_ValueNode_00000004.pas',
   SII_Decode_ValueNode_00000005 in '..\..\Source\SII_Decode_ValueNode_00000005.pas',
-  SII_Decode_ValueNode_00000006 in '..\..\Source\SII_Decode_ValueNode_00000006.pas';
+  SII_Decode_ValueNode_00000006 in '..\..\Source\SII_Decode_ValueNode_00000006.pas',
+  SII_Decode_ValueNode_00000009 in '..\..\Source\SII_Decode_ValueNode_00000009.pas',
+  SII_Decode_ValueNode_0000000A in '..\..\Source\SII_Decode_ValueNode_0000000A.pas',
+  SII_Decode_ValueNode_00000011 in '..\..\Source\SII_Decode_ValueNode_00000011.pas',
+  SII_Decode_ValueNode_00000012 in '..\..\Source\SII_Decode_ValueNode_00000012.pas',
+  SII_Decode_ValueNode_00000018 in '..\..\Source\SII_Decode_ValueNode_00000018.pas',
+  SII_Decode_ValueNode_00000019 in '..\..\Source\SII_Decode_ValueNode_00000019.pas',
+  SII_Decode_ValueNode_0000001A in '..\..\Source\SII_Decode_ValueNode_0000001A.pas',
+  SII_Decode_ValueNode_00000025 in '..\..\Source\SII_Decode_ValueNode_00000025.pas',
+  SII_Decode_ValueNode_00000026 in '..\..\Source\SII_Decode_ValueNode_00000026.pas',
+  SII_Decode_ValueNode_00000027 in '..\..\Source\SII_Decode_ValueNode_00000027.pas',
+  SII_Decode_ValueNode_00000028 in '..\..\Source\SII_Decode_ValueNode_00000028.pas',
+  SII_Decode_ValueNode_0000002B in '..\..\Source\SII_Decode_ValueNode_0000002B.pas',
+  SII_Decode_ValueNode_0000002C in '..\..\Source\SII_Decode_ValueNode_0000002C.pas';
 
 begin
   SII_Decode_Program.Main;
