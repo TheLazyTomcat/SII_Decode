@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000003 = class(TSIIBin_ValueNode)
-  // encoded string (UInt64)
   private
     fValue:     UInt64;
     fValueStr:  AnsiString;

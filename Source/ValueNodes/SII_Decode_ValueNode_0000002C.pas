@@ -26,7 +26,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_0000002C = class(TSIIBin_ValueNode)
-  // array of UInt16
   private
     fValue: array of UInt16;
   protected

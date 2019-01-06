@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000019 = class(TSIIBin_ValueNode)
-  // Vec7s/Vec8s
   private
     fValue: TSIIBin_Vec8s;
   protected

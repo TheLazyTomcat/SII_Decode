@@ -5,7 +5,7 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 -------------------------------------------------------------------------------}
-unit SII_Decode_ValueNode_0000003A;
+unit SII_Decode_ValueNode_00000029;
 
 {$INCLUDE '..\SII_Decode_defs.inc'}
 
@@ -13,6 +13,7 @@ interface
 
 uses
   Classes,
+  AuxTypes,
   SII_Decode_Common, SII_Decode_ValueNode;
 
 {!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -25,106 +26,60 @@ uses
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_0000003A
+                           TSIIBin_ValueNode_00000029
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_0000003A - declaration
+    TSIIBin_ValueNode_00000029 - declaration
 ===============================================================================}
 type
-  TSIIBin_ValueNode_0000003A = class(TSIIBin_ValueNode)
+  TSIIBin_ValueNode_00000029 = class(TSIIBin_ValueNode)
   private
-    fValue: array of TSIIBin_ID;
+    fValue: Int16;
   protected
-    procedure Initialize; override;
     Function GetValueType: TSIIBin_ValueType; override;
     procedure Load(Stream: TStream); override;
   public
     Function AsString: AnsiString; override;
-    Function AsLine(IndentCount: Integer = 0): AnsiString; override;
   end;
 
 implementation
 
 uses
   SysUtils,
-  BinaryStreaming, StrRect, ExplicitStringLists,
-  SII_Decode_Utils;
+  BinaryStreaming, StrRect;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_0000003A
+                           TSIIBin_ValueNode_00000029
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_0000003A - implementation
+    TSIIBin_ValueNode_00000029 - implementation
 ===============================================================================}
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_0000003A - protected methods
+    TSIIBin_ValueNode_00000029 - protected methods
 -------------------------------------------------------------------------------}
 
-procedure TSIIBin_ValueNode_0000003A.Initialize;
-var
-  i:  Integer;
+Function TSIIBin_ValueNode_00000029.GetValueType: TSIIBin_ValueType;
 begin
-For i := Low(fValue) to High(fValue) do
-  If not (fValue[i].Length in [0,$FF]) then
-    SIIBin_DecodeID(fValue[i]);
+Result := $00000029;
 end;
 
 //------------------------------------------------------------------------------
 
-Function TSIIBin_ValueNode_0000003A.GetValueType: TSIIBin_ValueType;
+procedure TSIIBin_ValueNode_00000029.Load(Stream: TStream);
 begin
-Result := $0000003A;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TSIIBin_ValueNode_0000003A.Load(Stream: TStream);
-var
-  i:  Integer;
-begin
-SetLength(fValue,Stream_ReadUInt32(Stream));
-For i := Low(fValue) to High(fValue) do
-  SIIBin_LoadID(Stream,fValue[i]);
+fValue := Stream_ReadInt16(Stream);
 end;
 
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_0000003A - public methods
+    TSIIBin_ValueNode_00000029 - public methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_0000003A.AsString: AnsiString;
+Function TSIIBin_ValueNode_00000029.AsString: AnsiString;
 begin
-Result := StrToAnsi(Format('%d',[Length(fValue)]));
-end;
-
-//------------------------------------------------------------------------------
-
-Function TSIIBin_ValueNode_0000003A.AsLine(IndentCount: Integer = 0): AnsiString;
-var
-  i:  Integer;
-begin
-If Length(fValue) >= SIIBIN_LARGE_ARRAY_THRESHOLD then
-  begin
-    with TAnsiStringList.Create do
-    try
-      TrailingLineBreak := False;
-      AddDef(StringOfChar(' ',IndentCount) + Format('%s: %d',[Name,Length(fValue)]));
-      For i := Low(fValue) to High(fValue) do
-        AddDef(StringOfChar(' ',IndentCount) + Format('%s[%d]: %s',[Name,i,SIIBin_IDToStr(fValue[i],FormatVersion < 2)]));
-      Result := Text;
-    finally
-      Free;
-    end;
-  end
-else
-  begin
-    Result := StrToAnsi(StringOfChar(' ',IndentCount) + Format('%s: %d',[Name,Length(fValue)]));
-    For i := Low(fValue) to High(fValue) do
-      Result := Result + StrToAnsi(sLineBreak + StringOfChar(' ',IndentCount) +
-                Format('%s[%d]: %s',[Name,i,SIIBin_IDToStr(fValue[i],FormatVersion < 2)]));
-  end;
+Result := StrToAnsi(Format('%d',[fValue]));
 end;
 
 end.

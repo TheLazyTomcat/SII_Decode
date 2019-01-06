@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000031 = class(TSIIBin_ValueNode)
-  // Int64
   private
     fValue: Int64;
   protected

@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000018 = class(TSIIBin_ValueNode)
-  // array of Vec4s
   private
     fValue: array of TSIIBin_Vec4s;
   protected

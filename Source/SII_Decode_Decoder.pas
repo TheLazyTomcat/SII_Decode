@@ -54,6 +54,7 @@ type
   private
     fFileInfo:                TSIIBin_FileInfo;
     fFileDataBlocks:          TObjectList;
+    fProcessUnknowns:         Boolean;
     fOnProgressTypeEvent:     TSIIBin_ProgressTypeEvent;
     fOnProgressEvent:         TSIIBin_ProgressEvent;
     fOnProgressTypeCallback:  TSIIBin_ProgressTypeCallback;
@@ -86,6 +87,7 @@ type
     procedure ConvertFromFile(const FileName: String; Output: TAnsiStringList); overload; virtual;
     procedure ConvertStream(InStream, OutStream: TStream; InvariantOutput: Boolean = False); virtual;
     procedure ConvertFile(const InFileName, OutFileName: String); overload; virtual;
+    property ProcessUnknowns: Boolean read fProcessUnknowns write fProcessUnknowns;
     property DataBlockCount: Integer read GetDataBlockCount;
     property DataBlocks[Index: Integer]: TSIIBin_DataBlock read GetDataBlock;
     property OnProgressTypeCallBack: TSIIBin_ProgressTypeCallback read fOnProgressTypeCallback write fOnProgressTypeCallback;
@@ -178,7 +180,8 @@ If Structure.Valid then
             begin
               If Length(Structure.Fields) <= ValueCount then
                 SetLength(Structure.Fields,Length(Structure.Fields) + 16);
-              If TSIIBin_DataBlock.ValueTypeSupported(ValueType) then
+              If TSIIBin_DataBlock.ValueTypeSupported(ValueType) or
+                (fProcessUnknowns and TSIIBin_DataBlockUnknowns.ValueTypeSupported(ValueType)) then
                 Structure.Fields[ValueCount].ValueType := ValueType
               else
                 raise EGeneralException.CreateFmt('Unsupported value type (0x%.8x).',[Ord(ValueType)],Self,'LoadStructureBlockLocal');
@@ -210,7 +213,10 @@ begin
 Index := IndexOfStructureLocal(StructureID,FileInfo);
 If Index >= 0 then
   begin
-    DataBlock := TSIIBin_DataBlock.Create(FileInfo.Header.Version,FileInfo.Structures[Index]);
+    If fProcessUnknowns then
+      DataBlock := TSIIBin_DataBlockUnknowns.Create(FileInfo.Header.Version,FileInfo.Structures[Index])
+    else
+      DataBlock := TSIIBin_DataBlock.Create(FileInfo.Header.Version,FileInfo.Structures[Index]);
     DataBlock.Load(Stream);
   end
 else raise EGeneralException.CreateFmt('Unknown structure ID (%d).',[StructureID],Self,'LoadDataBlockLocal');

@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000005 = class(TSIIBin_ValueNode)
-  // single
   private
     fValue: Single;
   protected

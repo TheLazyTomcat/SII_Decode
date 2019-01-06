@@ -25,7 +25,6 @@ uses
 ===============================================================================}
 type
   TSIIBin_ValueNode_00000001 = class(TSIIBin_ValueNode)
-  // string
   private
     fValue: AnsiString;
   protected
