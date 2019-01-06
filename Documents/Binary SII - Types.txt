@@ -14,7 +14,7 @@ to read that file first.
   0x00000002                  array of string
   0x00000003                  encoded string
   0x00000004                  array of encoded string
-  0x00000005                  single
+  0x00000005                  single 
   0x00000006                  array of single
   0x00000007                  unknown (expecting double)
   0x00000008                  unknown (expecting array of double)
@@ -379,9 +379,9 @@ Stored as a following structure:
 Ordinal string                                                        0x00000037
 --------------------------------------------------------------------------------
 In data block stored as one 32bit unsigned integer, but value actually denotes a
-string stored in appropriate layout block for the actual field.
+string stored in appropriate structure block for the actual field.
 
-Value type data structure (stored in layout block):
+Value type data structure (stored in structure block):
 
   begin
     UInt32  (4B)            - length of the following array

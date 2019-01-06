@@ -2,7 +2,7 @@
 
                                SII Decode utility
 
-                                 version 1.3.x
+                                 version 1.4.x
 
 ================================================================================
 
@@ -69,6 +69,7 @@ repositories:
 
 https://github.com/ncs-sniper/SII_Decode
 https://bitbucket.org/ncs-sniper/sii_decode
+https://gitlab.com/ncs-sniper/SII_Decode
 
 Note - master branch does not contain binaries, you can find them in a branch
        called "bin".
@@ -91,4 +92,4 @@ František Milt, frantisek.milt@gmail.com
 
 Copyright
 ----------------------------------------
-©2017-2018 František Milt, all rights reserved
+©2017-2019 František Milt, all rights reserved

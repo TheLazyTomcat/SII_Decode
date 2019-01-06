@@ -27,7 +27,7 @@ const
   8 bytes - header
     4 bytes - signature
     4 bytes - version (1 or 2)
-  5 bytes - an invalid layout block
+  5 bytes - an invalid structure block
     4 bytes - block type (0)
     1 byte  - validity (0))
 }
@@ -196,7 +196,7 @@ If Structure.Valid then
         FileInfo.Structures[High(FileInfo.Structures)] := Structure;
         Result := True;
       end
-    else raise EValueInvalidNameOnly.Create('Layout ID',Self,'LoadStructureBlockLocal');
+    else raise EValueInvalidNameOnly.Create('structure ID',Self,'LoadStructureBlockLocal');
   end
 else Result := False;
 end;
