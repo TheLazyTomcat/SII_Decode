@@ -13,7 +13,6 @@ interface
 
 uses
   Classes,
-  AuxTypes,
   SII_Decode_Common, SII_Decode_ValueNode;
 
 {===============================================================================

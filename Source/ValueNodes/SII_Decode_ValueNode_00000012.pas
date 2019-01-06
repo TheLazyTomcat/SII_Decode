@@ -40,8 +40,7 @@ implementation
 
 uses
   SysUtils,
-  BinaryStreaming, StrRect, ExplicitStringLists,
-  SII_Decode_Utils;
+  BinaryStreaming, StrRect, ExplicitStringLists;
 
 {===============================================================================
 --------------------------------------------------------------------------------

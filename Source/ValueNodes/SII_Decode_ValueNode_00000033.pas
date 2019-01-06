@@ -13,7 +13,9 @@ interface
 
 uses
   Classes,
+{$IFNDEF FPC}
   AuxTypes,
+{$ENDIF}
   SII_Decode_Common, SII_Decode_ValueNode;
 
 {===============================================================================

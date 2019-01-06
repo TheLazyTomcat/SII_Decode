@@ -25,7 +25,7 @@ var
 begin
 try
   WriteLn('**************************************');
-  WriteLn('*      SII Decode utility 1.3.2      *');
+  WriteLn('*      SII Decode utility 1.4.0      *');
   WriteLn('*   (c) 2017 - 2019 Frantisek Milt   *');
   WriteLn('**************************************');
   WriteLn;
@@ -35,7 +35,7 @@ try
       WriteLn;
       WriteLn('  SII_Decode.exe InputFile [OutputFile]');
       WriteLn;
-      WriteLn('    InputFile - file that has to be decoded');
+      WriteLn('    InputFile             - file that has to be decoded');
       WriteLn('    OutputFile (optional) - target file where to store the decoded result');
       WriteLn;
       Write('Press enter to continue...'); ReadLn;

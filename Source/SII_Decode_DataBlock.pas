@@ -40,11 +40,11 @@ type
     destructor Destroy; override;
     procedure Load(Stream: TStream); virtual;
     Function AsString: AnsiString; virtual;
-    property BlockID: TSIIBin_ID read fBlockID;
-    property Fields[Index: Integer]: TSIIBin_ValueNode read GetField;
-  published
     property Name: AnsiString read fName;
+    property BlockID: TSIIBin_ID read fBlockID;
     property FieldCount: Integer read GetFieldCount;
+    property Fields[Index: Integer]: TSIIBin_ValueNode read GetField; default;
+
   end;
 
 {===============================================================================
@@ -89,7 +89,7 @@ uses
   SII_Decode_ValueNode_0000002B,
   SII_Decode_ValueNode_0000002C,
   SII_Decode_ValueNode_00000031,
-  SII_Decode_ValueNode_00000032,
+  //SII_Decode_ValueNode_00000032,
   SII_Decode_ValueNode_00000033,
   SII_Decode_ValueNode_00000034,
   SII_Decode_ValueNode_00000035,

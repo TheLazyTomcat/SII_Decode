@@ -23,8 +23,8 @@ uses
 Function SIIBin_SingleToStr(Value: Single): AnsiString;
 Function SIIBin_DoubleToStr(Value: Double): AnsiString;
 
-procedure SIIBin_LoadString(Stream: TStream; var Str: AnsiString);
-procedure SIIBin_LoadID(Stream: TStream; var ID: TSIIBin_ID);
+procedure SIIBin_LoadString(Stream: TStream; out Str: AnsiString);
+procedure SIIBin_LoadID(Stream: TStream; out ID: TSIIBin_ID);
 
 Function SIIBin_EncodeID(ID: AnsiString): UInt64;
 Function SIIBin_DecodeID(EncodedID: UInt64): AnsiString; overload;
@@ -73,7 +73,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure SIIBin_LoadString(Stream: TStream; var Str: AnsiString);
+procedure SIIBin_LoadString(Stream: TStream; out Str: AnsiString);
 begin
 SetLength(Str,Stream_ReadUInt32(Stream));
 Stream_ReadBuffer(Stream,PAnsiChar(Str)^,Length(Str));
@@ -81,7 +81,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure SIIBin_LoadID(Stream: TStream; var ID: TSIIBin_ID);
+procedure SIIBin_LoadID(Stream: TStream; out ID: TSIIBin_ID);
 var
   i:  Integer;
 begin

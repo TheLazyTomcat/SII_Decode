@@ -40,7 +40,6 @@ type
     destructor Destroy; override;
     Function AsString: AnsiString; virtual;
     Function AsLine(IndentCount: Integer = 0): AnsiString; virtual;
-  published
     property ValueType: TSIIBin_ValueType read GetValueType;
     property ValueInfo: TSIIBin_NamedValue read fValueInfo;
     property FormatVersion: UInt32 read fFormatVersion;

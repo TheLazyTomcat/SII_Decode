@@ -13,7 +13,9 @@ interface
 
 uses
   Classes,
+{$IFNDEF FPC}
   AuxTypes,
+{$ENDIF}
   SII_Decode_Common, SII_Decode_ValueNode;
 
 {===============================================================================
@@ -40,8 +42,7 @@ implementation
 
 uses
   SysUtils,
-  BinaryStreaming, StrRect, ExplicitStringLists,
-  SII_Decode_Utils;
+  BinaryStreaming, StrRect, ExplicitStringLists;
 
 {===============================================================================
 --------------------------------------------------------------------------------

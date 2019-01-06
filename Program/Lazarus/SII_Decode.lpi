@@ -28,7 +28,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\Libs"/>
+            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\ValueNodes;..\..\Source\Libs"/>
             <UnitOutputDirectory Value="out_temp\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -62,7 +62,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\Libs"/>
+            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\ValueNodes;..\..\Source\Libs"/>
             <UnitOutputDirectory Value="out_temp\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -103,7 +103,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\Libs"/>
+            <OtherUnitFiles Value="..;..\..\Source;..\..\Source\ValueNodes;..\..\Source\Libs"/>
             <UnitOutputDirectory Value="out_temp\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -142,31 +142,15 @@
         <PackageName Value="LazUtils"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="2">
       <Unit0>
         <Filename Value="SII_Decode.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="..\..\Source\SII_Decode_Nodes.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit1>
-      <Unit2>
-        <Filename Value="..\..\Source\SII_Decode_Decoder.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit2>
-      <Unit3>
         <Filename Value="..\SII_Decode_Program.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit3>
-      <Unit4>
-        <Filename Value="..\..\Source\SII_Decode_Common.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit4>
-      <Unit5>
-        <Filename Value="..\..\Source\SII_Decode_Helpers.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit5>
+      </Unit1>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -177,7 +161,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..;..\..\Source;..\..\Source\Libs"/>
+      <OtherUnitFiles Value="..;..\..\Source;..\..\Source\ValueNodes;..\..\Source\Libs"/>
       <UnitOutputDirectory Value="out_temp\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

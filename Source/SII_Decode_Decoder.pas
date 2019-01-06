@@ -13,7 +13,7 @@ interface
 
 uses
   Classes, Contnrs, ExplicitStringLists,
-  SII_Decode_Common, SII_Decode_ValueNode, SII_Decode_DataBlock;
+  SII_Decode_Common, SII_Decode_DataBlock;
 
 {===============================================================================
 --------------------------------------------------------------------------------
@@ -86,11 +86,10 @@ type
     procedure ConvertFromFile(const FileName: String; Output: TAnsiStringList); overload; virtual;
     procedure ConvertStream(InStream, OutStream: TStream; InvariantOutput: Boolean = False); virtual;
     procedure ConvertFile(const InFileName, OutFileName: String); overload; virtual;
+    property DataBlockCount: Integer read GetDataBlockCount;
     property DataBlocks[Index: Integer]: TSIIBin_DataBlock read GetDataBlock;
     property OnProgressTypeCallBack: TSIIBin_ProgressTypeCallback read fOnProgressTypeCallback write fOnProgressTypeCallback;
-    property OnProgressCallBack: TSIIBin_ProgressCallback read fOnProgressCallback write fOnProgressCallback;
-  published
-    property DataBlockCount: Integer read GetDataBlockCount;
+    property OnProgressCallBack: TSIIBin_ProgressCallback read fOnProgressCallback write fOnProgressCallback; 
     property OnProgressTypeEvent: TSIIBin_ProgressTypeEvent read fOnProgressTypeEvent write fOnProgressTypeEvent;
     property OnProgressEvent: TSIIBin_ProgressEvent read fOnProgressEvent write fOnProgressEvent;
     property OnProgress: TSIIBin_ProgressEvent read fOnProgressEvent write fOnProgressEvent;
