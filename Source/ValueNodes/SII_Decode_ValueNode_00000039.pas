@@ -5,9 +5,9 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 -------------------------------------------------------------------------------}
-unit SII_Decode_ValueNode_00000019;
+unit SII_Decode_ValueNode_00000039;
 
-{$INCLUDE '.\SII_Decode_defs.inc'}
+{$INCLUDE '..\SII_Decode_defs.inc'}
 
 interface
 
@@ -17,17 +17,16 @@ uses
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000019
+                           TSIIBin_ValueNode_00000039
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000019 - declaration
+    TSIIBin_ValueNode_00000039 - declaration
 ===============================================================================}
 type
-  TSIIBin_ValueNode_00000019 = class(TSIIBin_ValueNode)
-  // Vec7s/Vec8s
+  TSIIBin_ValueNode_00000039 = class(TSIIBin_ValueNode)
   private
-    fValue: TSIIBin_Vec8s;
+    fValue: TSIIBin_ID;
   protected
     procedure Initialize; override;
     Function GetValueType: TSIIBin_ValueType; override;
@@ -39,71 +38,47 @@ type
 implementation
 
 uses
-  SysUtils,
-  BinaryStreaming, StrRect,
   SII_Decode_Utils;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000019
+                           TSIIBin_ValueNode_00000039
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000019 - implementation
+    TSIIBin_ValueNode_00000039 - implementation
 ===============================================================================}
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000019 - protected methods
+    TSIIBin_ValueNode_00000039 - protected methods
 -------------------------------------------------------------------------------}
 
-procedure TSIIBin_ValueNode_00000019.Initialize;
-var
-  Coef: Integer;
+procedure TSIIBin_ValueNode_00000039.Initialize;
 begin
-If FormatVersion = 2 then
-  begin
-    Coef := Trunc(fValue[3]);
-    fValue[0] := fValue[0] + Integer(((Coef and $FFF) - 2048) shl 9);
-    fValue[2] := fValue[2] + Integer((((Coef shr 12) and $FFF) - 2048) shl 9);
-  end;
+If not (fValue.Length in [0,$FF]) then
+  SIIBin_DecodeID(fValue);
 end;
 
 //------------------------------------------------------------------------------
 
-Function TSIIBin_ValueNode_00000019.GetValueType: TSIIBin_ValueType;
+Function TSIIBin_ValueNode_00000039.GetValueType: TSIIBin_ValueType;
 begin
-Result := $00000019;
+Result := $00000039;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TSIIBin_ValueNode_00000019.Load(Stream: TStream);
+procedure TSIIBin_ValueNode_00000039.Load(Stream: TStream);
 begin
-case FormatVersion of
-  1:  begin
-        Stream_ReadFloat32(Stream,fValue[0]);
-        Stream_ReadFloat32(Stream,fValue[1]);
-        Stream_ReadFloat32(Stream,fValue[2]);
-        fValue[3] := 0.0;
-        Stream_ReadFloat32(Stream,fValue[4]);
-        Stream_ReadFloat32(Stream,fValue[5]);
-        Stream_ReadFloat32(Stream,fValue[6]);
-        Stream_ReadFloat32(Stream,fValue[7]);
-      end;
-  2:  Stream_ReadBuffer(Stream,fValue,SizeOf(TSIIBin_Vec8s));
-end;
+SIIBin_LoadID(Stream,fValue);
 end;
 
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000019 - public methods
+    TSIIBin_ValueNode_00000039 - public methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_00000019.AsString: AnsiString;
+Function TSIIBin_ValueNode_00000039.AsString: AnsiString;
 begin
-Result := StrToAnsi(Format('(%s, %s, %s) (%s; %s, %s, %s)',
-                    [SIIBin_SingleToStr(fValue[0]),SIIBin_SingleToStr(fValue[1]),
-                     SIIBin_SingleToStr(fValue[2]),SIIBin_SingleToStr(fValue[4]),
-                     SIIBin_SingleToStr(fValue[5]),SIIBin_SingleToStr(fValue[6]),
-                     SIIBin_SingleToStr(fValue[7])]));
+Result := SIIBin_IDToStr(fValue,FormatVersion < 2);
 end;
 
 end.

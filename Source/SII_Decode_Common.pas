@@ -15,9 +15,9 @@ uses
   AuxTypes;
 
 const
-  SIIBin_Signature_Bin   = UInt32($49495342);   // BSII
-  SIIBin_Signature_Crypt = UInt32($43736353);   // ScsC
-  SIIBin_Signature_Text  = UInt32($4E696953);   // SiiN
+  SIIBIN_SIGNARUTE_BIN   = UInt32($49495342);   // BSII
+  SIIBin_SIGNATURE_CRYPT = UInt32($43736353);   // ScsC
+  SIIBin_SIGNATURE_TEXT  = UInt32($4E696953);   // SiiN
 
 //------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ type
     Version:    UInt32;
   end;  
 
-  TSIIBin_File = record
+  TSIIBin_FileInfo = record
     Header:     TSIIBin_FileHeader;
     Structures: array of TSIIBin_Structure;
   end;
@@ -72,7 +72,7 @@ type
 //------------------------------------------------------------------------------
 
 const
-  TSIIBin_LargeArrayThreshold = 16;
+  SIIBIN_LARGE_ARRAY_THRESHOLD = 16;
 
 implementation
 

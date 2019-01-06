@@ -5,9 +5,9 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 -------------------------------------------------------------------------------}
-unit SII_Decode_ValueNode_00000003;
+unit SII_Decode_ValueNode_00000035;
 
-{$INCLUDE '.\SII_Decode_defs.inc'}
+{$INCLUDE '..\SII_Decode_defs.inc'}
 
 interface
 
@@ -17,20 +17,17 @@ uses
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000003
+                           TSIIBin_ValueNode_00000035
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000003 - declaration
+    TSIIBin_ValueNode_00000035 - declaration
 ===============================================================================}
 type
-  TSIIBin_ValueNode_00000003 = class(TSIIBin_ValueNode)
-  // encoded string (UInt64)
+  TSIIBin_ValueNode_00000035 = class(TSIIBin_ValueNode)
   private
-    fValue:     UInt64;
-    fValueStr:  AnsiString;
+    fValue: ByteBool;
   protected
-    procedure Initialize; override;
     Function GetValueType: TSIIBin_ValueType; override;
     procedure Load(Stream: TStream); override;
   public
@@ -40,50 +37,40 @@ type
 implementation
 
 uses
-  BinaryStreaming, 
-  SII_Decode_Utils;
+  SysUtils,
+  BinaryStreaming, StrRect;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000003
+                           TSIIBin_ValueNode_00000035
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000003 - implementation
+    TSIIBin_ValueNode_00000035 - implementation
 ===============================================================================}
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000003 - protected methods
+    TSIIBin_ValueNode_00000035 - protected methods
 -------------------------------------------------------------------------------}
 
-procedure TSIIBin_ValueNode_00000003.Initialize;
+Function TSIIBin_ValueNode_00000035.GetValueType: TSIIBin_ValueType;
 begin
-fValueStr := SIIBin_DecodeID(fValue);
+Result := $00000035;
 end;
 
 //------------------------------------------------------------------------------
 
-Function TSIIBin_ValueNode_00000003.GetValueType: TSIIBin_ValueType;
+procedure TSIIBin_ValueNode_00000035.Load(Stream: TStream);
 begin
-Result := $00000003;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TSIIBin_ValueNode_00000003.Load(Stream: TStream);
-begin
-fValue := Stream_ReadUInt64(Stream);
+fValue := Stream_ReadUInt8(Stream) <> 0;
 end;
 
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000003 - public methods
+    TSIIBin_ValueNode_00000035 - public methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_00000003.AsString: AnsiString;
+Function TSIIBin_ValueNode_00000035.AsString: AnsiString;
 begin
-If fValue <> 0 then
-  Result := fValueStr
-else
-  Result := '""';
+Result := StrToAnsi(AnsiLowerCase(BoolToStr(fValue,True)));
 end;
 
 end.

@@ -5,30 +5,29 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 -------------------------------------------------------------------------------}
-unit SII_Decode_ValueNode_0000002B;
+unit SII_Decode_ValueNode_00000017;
 
-{$INCLUDE '.\SII_Decode_defs.inc'}
+{$INCLUDE '..\SII_Decode_defs.inc'}
 
 interface
 
 uses
   Classes,
-  AuxTypes,
   SII_Decode_Common, SII_Decode_ValueNode;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_0000002B
+                           TSIIBin_ValueNode_00000017
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_0000002B - declaration
+    TSIIBin_ValueNode_00000017 - declaration
 ===============================================================================}
 type
-  TSIIBin_ValueNode_0000002B = class(TSIIBin_ValueNode)
-  // UInt16
+  TSIIBin_ValueNode_00000017 = class(TSIIBin_ValueNode)
+  // Vec4s
   private
-    fValue: UInt16;
+    fValue: TSIIBin_Vec4s;
   protected
     Function GetValueType: TSIIBin_ValueType; override;
     procedure Load(Stream: TStream); override;
@@ -40,42 +39,43 @@ implementation
 
 uses
   SysUtils,
-  BinaryStreaming, StrRect;
+  BinaryStreaming, StrRect,
+  SII_Decode_Utils;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_0000002B
+                           TSIIBin_ValueNode_00000017
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_0000002B - implementation
+    TSIIBin_ValueNode_00000017 - declaration
 ===============================================================================}
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_0000002B - protected methods
+    TSIIBin_ValueNode_00000017 - protected methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_0000002B.GetValueType: TSIIBin_ValueType;
+Function TSIIBin_ValueNode_00000017.GetValueType: TSIIBin_ValueType;
 begin
-Result := $0000002B;
+Result := $00000017;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TSIIBin_ValueNode_0000002B.Load(Stream: TStream);
+procedure TSIIBin_ValueNode_00000017.Load(Stream: TStream);
 begin
-fValue := Stream_ReadUInt16(Stream);
+Stream_ReadBuffer(Stream,fValue,SizeOf(TSIIBin_Vec4s));
 end;
 
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_0000002B - public methods
+    TSIIBin_ValueNode_00000017 - public methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_0000002B.AsString: AnsiString;
+Function TSIIBin_ValueNode_00000017.AsString: AnsiString;
 begin
-If fValue <> $FFFF then
-  Result := StrToAnsi(Format('%u',[fValue]))
-else
-  Result := AnsiString('nil');
+Result := StrToAnsi(Format('(%s; %s, %s, %s)',[SIIBin_SingleToStr(fValue[0]),
+                                               SIIBin_SingleToStr(fValue[1]),
+                                               SIIBin_SingleToStr(fValue[2]),
+                                               SIIBin_SingleToStr(fValue[3])]));;
 end;
 
 end.

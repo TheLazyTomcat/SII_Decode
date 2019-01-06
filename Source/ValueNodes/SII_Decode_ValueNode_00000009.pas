@@ -5,9 +5,9 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 -------------------------------------------------------------------------------}
-unit SII_Decode_ValueNode_00000012;
+unit SII_Decode_ValueNode_00000009;
 
-{$INCLUDE '.\SII_Decode_defs.inc'}
+{$INCLUDE '..\SII_Decode_defs.inc'}
 
 interface
 
@@ -17,95 +17,64 @@ uses
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000012
+                           TSIIBin_ValueNode_00000009
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000012 - declaration
+    TSIIBin_ValueNode_00000009 - declaration
 ===============================================================================}
 type
-  TSIIBin_ValueNode_00000012 = class(TSIIBin_ValueNode)
-  // array of Vec3i
+  TSIIBin_ValueNode_00000009 = class(TSIIBin_ValueNode)
+  // Vec3s
   private
-    fValue: array of TSIIBin_Vec3i;
+    fValue: TSIIBin_Vec3s;
   protected
     Function GetValueType: TSIIBin_ValueType; override;
     procedure Load(Stream: TStream); override;
   public
     Function AsString: AnsiString; override;
-    Function AsLine(IndentCount: Integer = 0): AnsiString; override;
   end;
 
 implementation
 
 uses
   SysUtils,
-  BinaryStreaming, StrRect, ExplicitStringLists,
+  BinaryStreaming, StrRect,
   SII_Decode_Utils;
 
 {===============================================================================
 --------------------------------------------------------------------------------
-                           TSIIBin_ValueNode_00000012
+                           TSIIBin_ValueNode_00000009
 --------------------------------------------------------------------------------
 ===============================================================================}
 {===============================================================================
-    TSIIBin_ValueNode_00000012 - implementation
+    TSIIBin_ValueNode_00000009 - implementation
 ===============================================================================}
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000012 - protected methods
+    TSIIBin_ValueNode_00000009 - protected methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_00000012.GetValueType: TSIIBin_ValueType;
+Function TSIIBin_ValueNode_00000009.GetValueType: TSIIBin_ValueType;
 begin
-Result := $00000012;
+Result := $00000009;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TSIIBin_ValueNode_00000012.Load(Stream: TStream);
-var
-  i:  Integer;
+procedure TSIIBin_ValueNode_00000009.Load(Stream: TStream);
 begin
-SetLength(fValue,Stream_ReadUInt32(Stream));
-For i := Low(fValue) to High(fValue) do
-  Stream_ReadBuffer(Stream,fValue[i],SizeOf(TSIIBin_Vec3i));
+Stream_ReadBuffer(Stream,fValue,SizeOf(TSIIBin_Vec3s));
 end;
 
 {-------------------------------------------------------------------------------
-    TSIIBin_ValueNode_00000012 - public methods
+    TSIIBin_ValueNode_00000009 - public methods
 -------------------------------------------------------------------------------}
 
-Function TSIIBin_ValueNode_00000012.AsString: AnsiString;
+Function TSIIBin_ValueNode_00000009.AsString: AnsiString;
 begin
-Result := StrToAnsi(Format('%d',[Length(fValue)]));
-end;
-
-//------------------------------------------------------------------------------
-
-Function TSIIBin_ValueNode_00000012.AsLine(IndentCount: Integer = 0): AnsiString;
-var
-  i:  Integer;
-begin
-If Length(fValue) >= TSIIBin_LargeArrayThreshold then
-  begin
-    with TAnsiStringList.Create do
-    try
-      TrailingLineBreak := False;
-      AddDef(StringOfChar(' ',IndentCount) + Format('%s: %d',[Name,Length(fValue)]));
-      For i := Low(fValue) to High(fValue) do
-        AddDef(StringOfChar(' ',IndentCount) + Format('%s[%d]: (%d, %d, %d)',[Name,i,fValue[i][0],fValue[i][1],fValue[i][2]]));
-      Result := Text;
-    finally
-      Free;
-    end;
-  end
-else
-  begin
-    Result := StrToAnsi(StringOfChar(' ',IndentCount) + Format('%s: %d',[Name,Length(fValue)]));
-    For i := Low(fValue) to High(fValue) do
-      Result := Result + StrToAnsi(sLineBreak + StringOfChar(' ',IndentCount) +
-        Format('%s[%d]: (%d, %d, %d)',[Name,i,fValue[i][0],fValue[i][1],fValue[i][2]]));
-  end;
+Result := StrToAnsi(Format('(%s, %s, %s)',[SIIBin_SingleToStr(fValue[0]),
+                                           SIIBin_SingleToStr(fValue[1]),
+                                           SIIBin_SingleToStr(fValue[2])]));;
 end;
 
 end.

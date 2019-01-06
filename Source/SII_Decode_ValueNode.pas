@@ -42,6 +42,7 @@ type
     Function AsLine(IndentCount: Integer = 0): AnsiString; virtual;
   published
     property ValueType: TSIIBin_ValueType read GetValueType;
+    property ValueInfo: TSIIBin_NamedValue read fValueInfo;
     property FormatVersion: UInt32 read fFormatVersion;
     property Name: AnsiString read fName;
   end;
