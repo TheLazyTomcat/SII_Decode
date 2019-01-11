@@ -280,12 +280,12 @@ To get the bias values, do following:
     - get truncated value (its integer part, without any rounding) of the
       fourth component as an 32bit integer
     - for first component...
-      - take lowest 12bits of the integer and substract 2048
+      - take lowest 12bits of the integer and subtract 2048
       - shift resulting value left by 9 bits
       - add resulting integer value to the first component
     - for third component...
       - take bits 12 to 23, shift them right (logical shift) by 12 bits and
-        substract 2048
+        subtract 2048
       - shift resulting value left by 9 bits
       - add resulting integer value to the third component
 
