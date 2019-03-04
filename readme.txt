@@ -13,9 +13,9 @@ Index
   Description .............................................  22
   Library files ...........................................  40
   Repositories ............................................  65
-  Licensing ...............................................  78
-  Authors, contacts .......................................  86
-  Copyright ...............................................  92
+  Licensing ...............................................  79
+  Authors, contacts .......................................  87
+  Copyright ...............................................  97
 
 
 
@@ -87,6 +87,10 @@ this license in file license.txt or on web page https://www.mozilla.org/MPL/2.0/
 Authors, contacts
 ----------------------------------------
 František Milt, frantisek.milt@gmail.com
+
+If you find this project useful, consider making a small donation using
+following link:
+https://www.paypal.me/FMilt
 
 
 
